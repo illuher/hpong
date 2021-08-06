@@ -1,4 +1,4 @@
-FROM golang:1.16.5-alpine3.13 as builder
+FROM golang:1.16.7-alpine3.13 as builder
 RUN apk add git
 WORKDIR /build/hpong/
 COPY . /build/hpong/
