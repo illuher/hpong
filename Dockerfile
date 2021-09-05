@@ -1,15 +1,12 @@
-FROM golang:1.16.7-alpine3.13 as builder
-RUN apk add git
-WORKDIR /build/hpong/
-COPY . /build/hpong/
+FROM golang:1.17 as builder
+
+ENV appname=hpong
+WORKDIR /build/app/
+COPY . /build/app/
 ENV CGO_ENABLED=0
-RUN go mod download && \
-    go build -o ./hpong ./app/main.go && \
-    chmod +x ./hpong
+RUN go build -o ./$appname ./app/main.go && \
+    chmod +x ./$appname
 
 FROM scratch
-#FROM alpine:latest
-COPY --from=builder /build/hpong/hpong /go/bin/
-EXPOSE 8080
-ENTRYPOINT ["/go/bin/hpong"]
-#CMD ["/go/bin/hpong"]
+COPY --from=builder /build/app/$appname /bin/$appname
+ENTRYPOINT ["hpong"]
