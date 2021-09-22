@@ -17,6 +17,17 @@ spec:
       containers:
       - image: illuher/hpong:0.0.3-scratch
         name: hpong
+        livenessProbe:
+          httpGet:
+            path: /ping
+            port: 8081
+        readinessProbe:
+          initialDelaySeconds: 5
+          periodSeconds: 5
+          failureThreshold: 1
+          httpGet:
+            path: /ping
+            port: 8081
         ports:
         - containerPort: 8081
         resources:
