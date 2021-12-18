@@ -13,6 +13,7 @@ spec:
     metadata:
       labels:
         app: hpong
+        lala: kaka
     spec:
       containers:
       - image: illuher/hpong:0.0.3-scratch
