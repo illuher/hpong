@@ -9,9 +9,13 @@ import (
 	"net/http"
 	"os"
 	"os/signal"
+	"strconv"
 	"time"
 
 	"github.com/gorilla/mux"
+	"github.com/prometheus/client_golang/prometheus"
+	"github.com/prometheus/client_golang/prometheus/promauto"
+	"github.com/prometheus/client_golang/prometheus/promhttp"
 	"inet.af/netaddr"
 )
 
@@ -22,6 +26,11 @@ type responce struct {
 var portFlag int
 var ipFlagRaw string
 var ipFlag netaddr.IP
+
+var opsProcessed = promauto.NewCounterVec(prometheus.CounterOpts{
+	Name: "myapp_processed_ops_total",
+	Help: "The total number of processed events",
+}, []string{"method", "path", "statuscode"})
 
 func init() {
 	// Tie the command-line flag to the intervalFlag variable and
@@ -42,10 +51,14 @@ func Run() {
 	flag.DurationVar(&wait, "graceful-timeout", time.Second*15, "the duration for which the server gracefully wait for existing connections to finish - e.g. 15s or 1m")
 	flag.Parse()
 
+	pr := prometheus.NewRegistry()
+	pr.MustRegister(opsProcessed)
+
 	r := mux.NewRouter()
 	r.HandleFunc("/", handler)
 	r.HandleFunc("/ping", handlerPing)
 	r.HandleFunc("/headers", handler)
+	r.Handle("/metrics", promhttp.HandlerFor(pr, promhttp.HandlerOpts{}))
 	r.NotFoundHandler = http.HandlerFunc(errorHandler)
 
 	log.Println(fmt.Sprint(ipFlag) + ":" + fmt.Sprint(portFlag))
@@ -97,6 +110,7 @@ func handler(w http.ResponseWriter, r *http.Request) {
 	}
 	resp.ValsList["Host"] = r.Host
 	resp.ValsList["IP"] = r.RemoteAddr
+	opsProcessed.With(prometheus.Labels{"method": r.Method, "path": r.RequestURI, "statuscode": strconv.Itoa(200)}).Inc()
 	writeResponce(w, *resp)
 }
 
