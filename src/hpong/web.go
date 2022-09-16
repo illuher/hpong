@@ -92,7 +92,10 @@ func Run() {
 	defer cancel()
 	// Doesn't block if no connections, but will otherwise wait
 	// until the timeout deadline.
-	srv.Shutdown(ctx)
+	err := srv.Shutdown(ctx)
+	if err != nil {
+		log.Println("Error on shutdown: ", err.Error())
+	}
 	// Optionally, you could run srv.Shutdown in a goroutine and block on
 	// <-ctx.Done() if your application should wait for other services
 	// to finalize based on context cancellation.
@@ -128,7 +131,10 @@ func writeResponce(w http.ResponseWriter, resp responce) {
 		log.Println(err.Error())
 	}
 	w.Header().Add("Content-Type", "application/json")
-	w.Write(jsonData)
+	_, err = w.Write(jsonData)
+	if err != nil {
+		log.Println("Failed write responce,", err.Error())
+	}
 }
 
 func errorHandler(w http.ResponseWriter, r *http.Request) {
