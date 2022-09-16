@@ -22,7 +22,7 @@ jobs:
       # uses: golangci/golangci-lint-action@5c56cd6c9dc07901af25baab6f2b0d9f3b7c3018
       uses: golangci/golangci-lint-action@v3
       with:
-        working-directory: app
+        working-directory: src
       
     - name: Build the Docker image
       run: docker build . --file src/Dockerfile --tag hpong:$(date +%s)
