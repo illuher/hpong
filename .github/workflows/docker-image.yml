@@ -25,7 +25,7 @@ jobs:
         working-directory: src
       
     - name: Build the Docker image
-      run: docker build . --file src/Dockerfile --tag hpong:$(date +%s)
+      run: docker build . --file Dockerfile --tag hpong:$(date +%s)
    
       
       
