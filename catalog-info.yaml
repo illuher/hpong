@@ -10,9 +10,6 @@ spec:
   owner: illuher
   system: examples
   namespace: default
-  tags:
-    - golang
-    - http
   links:
     - title: Website
       url: http://google.com
