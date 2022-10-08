@@ -9,4 +9,9 @@ spec:
   lifecycle: experimental
   owner: illuher
   system: examples
-  lala: kaka
+  namespace: default
+  tags: [golang-http]
+  links:
+    - title: Website
+      url: http://google.com
+      
