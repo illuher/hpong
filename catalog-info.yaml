@@ -6,6 +6,6 @@ metadata:
     github.com/project-slug: illuher/hpong
 spec:
   type: other
-  lifecycle: unknown
+  lifecycle: experimental
   owner: illuher
   system: examples
