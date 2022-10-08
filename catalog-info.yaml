@@ -8,3 +8,4 @@ spec:
   type: other
   lifecycle: unknown
   owner: illuher
+  system: examples
