@@ -12,5 +12,5 @@ spec:
   namespace: default
   links:
     - title: Website
-      url: http://google.com
+      url: https://google.com
       
