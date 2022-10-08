@@ -9,7 +9,6 @@ spec:
   lifecycle: experimental
   owner: illuher
   system: examples
-  namespace: default
   links:
     - title: Website
       url: https://google.com
